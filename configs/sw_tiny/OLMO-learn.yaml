@@ -1,5 +1,5 @@
 run_name: OLMo-1B
-seed: 6198
+seed: 123
 dry_run: false
 
 wandb:
@@ -8,10 +8,10 @@ wandb:
 
 # 模型配置
 model:
-  d_model: 2048
-  n_heads: 16
-  n_layers: 16
-  mlp_ratio: 8
+  d_model: 512
+  n_heads: 4
+  n_layers: 4
+  mlp_ratio: 4
   weight_tying: true
   alibi: false
   rope: true
@@ -42,7 +42,7 @@ compile: ##null  # causes instability on AMD GPUs
 # 优化器配置
 optimizer:
   name: adamw
-  learning_rate: 4.0e-4
+  learning_rate: 1.0e-4
   weight_decay: 0.1
   betas:
   - 0.9
@@ -51,7 +51,7 @@ optimizer:
 
 scheduler:
   name: cosine_with_warmup
-  t_warmup: 2000
+  t_warmup: 500
   alpha_f: 0.1
 
 # tokenizer配置
@@ -74,7 +74,7 @@ load_path: null
   #'/mnt/geogpt-gpfs/llm-course/home/yly/OLMo/checkpoints/OLMo-1B/step1000/'
 
 # 训练步数及batchsize
-max_duration: 739_328  # 3.1T tokens
+max_duration: 128  # 3.1T tokens
 global_train_batch_size: 64  
 device_train_microbatch_size: 8 
 
@@ -92,7 +92,7 @@ speed_monitor:
   window_size: 20
 
 # 训练时长
-time_limit: 864000
+time_limit: 8640
 
 # 验证集地址
 eval_interval: ${save_interval}
