@@ -290,6 +290,7 @@ class ModelConfig(BaseConfig):
 
     block_group_size: int = 1
     """
+    其主要作用是在使用 FSDP（Fully Sharded Data Parallel） 时，决定如何将多个子块（blocks）组合成一个父块，以便进行训练时的分布式优化
     The number of blocks to group together into a single parent block.
     This has no affect on the number of parameters in the model and is only used to wrap groups
     of blocks together with a single FSDP wrapper during training.
@@ -1114,6 +1115,7 @@ class TrainConfig(BaseConfig):
 
     reset_optimizer_state: bool = False
     """
+    它控制了在恢复模型时优化器的状态是否被重置。默认flase，表示会恢复优化器状态
     When this is set, we restore the model from a checkpoint (if given), but we leave the optimizer uninitialized.
     We also set a new learning rate schedule that does a new warmup, such that it intercepts the original learning
     curve (according to the current learning rate schedule settings), and continues from there.
@@ -1121,6 +1123,7 @@ class TrainConfig(BaseConfig):
 
     reset_trainer_state: bool = False
     """
+    它控制是否从检查点（checkpoint）恢复 训练器（trainer）的状态。默认false，表示会恢复训练器状态
     When this is set we don't restore the trainer state from a checkpoint.
     """
 

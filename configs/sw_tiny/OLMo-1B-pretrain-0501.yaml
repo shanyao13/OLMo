@@ -1,10 +1,11 @@
-run_name: OLMo-1B-a100v2
-seed: 6198                           # 随机数种子，用于确保实验可复现
+run_name: OLMo-1B-a100-0501v2
+# SCRATCH_DIR: /mnt/zzb6data/peixunban/zzb6/home/swZheng/OLMo/tmp/output-test
+seed: 61980                           # 随机数种子，用于确保实验可复现
 dry_run: false                      # 是否为试运行模式，若为 true 不会真正训练
 
 wandb:
   name: ${run_name}
-  project: olmo-a100-0501v1
+  project: olmo-a100-0501
   entity: zhengshui13
 
 # 模型配置
@@ -38,12 +39,12 @@ model:
   init_fn: normal     #这里如何修改？
 
 compile: ##null  # causes instability on AMD GPUs
-  backend: inductor
+  backend: inductor   # Inductor 是 PyTorch 2.0 中引入的一个 编译后端，它用于优化模型的计算图，目的是加速训练和推理过程。
 
 # 优化器配置
 optimizer:
   name: adamw
-  learning_rate: 4.0e-4 
+  learning_rate: 1.0e-4 
   weight_decay: 0.1
   betas:
   - 0.9
@@ -62,16 +63,16 @@ tokenizer:
 
 # checkpoint保存配置
 # save_folder: ${path.choose:${oc.env:SCRATCH_DIR,no_exist}/checkpoints,/results}/${oc.env:SLURM_JOB_ID,${run_name}}
-save_folder: ${
-  path.choose:
-    ${oc.env:SCRATCH_DIR,no_exist}/checkpoints,
-    /results
-  }/${oc.env:SLURM_JOB_ID,${run_name}}
-# save_folder: /mnt/zzb6data/peixunban/zzb6/home/swZheng/OLMo/tmp-out0501v1
+# save_folder: ${
+#   path.choose:
+#     ${oc.env:SCRATCH_DIR,no_exist}/checkpoints,
+#     /results
+#   }/${oc.env:SLURM_JOB_ID,${run_name}}
+save_folder: /mnt/zzb6data/peixunban/zzb6/home/swZheng/OLMo/tmp/output-1B
 save_overwrite: true
 # Sharded checkpoints (best for restarts)
 save_interval: 1000    # 1000步保存一次
-save_num_checkpoints_to_keep: 3   # 保留最近3个step
+save_num_checkpoints_to_keep: 5   # 保留最近3个step
 # Unsharded checkpoints (for final storage)
 save_interval_unsharded: 3000    # 保留完成的模型，3000步保存一次
 save_num_unsharded_checkpoints_to_keep: -1    #保存所有unshared model, 如果是3保存最近3个
@@ -79,12 +80,13 @@ save_num_unsharded_checkpoints_to_keep: -1    #保存所有unshared model, 如�
 # checkpoint加载路径
 load_path: null
   #'/mnt/geogpt-gpfs/llm-course/home/yly/OLMo/checkpoints/OLMo-1B/step1000/'
+  # /mnt/zzb6data/peixunban/zzb6/home/swZheng/OLMo/tmp/checkpoints-1024-512-8/step600
 
 # 训练步数及batchsize
-# max_duration: 739_328  # 3.1T tokens
-max_duration: 739_328  # 3.1T tokens------------------？
-global_train_batch_size: 512  
-device_train_microbatch_size: 8 
+max_duration: 739_328  # 3.1T tokens
+# max_duration: 86400  # 24hours。 3.1T tokens------------------？
+global_train_batch_size: 640   # 512  
+device_train_microbatch_size: 20 #16 
 
 precision: amp_bf16
 
@@ -129,12 +131,12 @@ evaluators:
           - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/dolma_wiki/val/part-0-00000.npy
         v3-small-ice-validation:
           - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/ice/val/part-0-00000.npy
-        v3-small-m2d2_s2orc-validation:
-          - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/m2d2_s2orc/val/part-0-00000.npy
-        v3-small-pile-validation:
-          - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/pile/val/part-0-00000.npy
-        v3-small-wikitext_103-validation:
-          - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/wikitext_103/val/part-0-00000.npy
+        # v3-small-m2d2_s2orc-validation:
+        #   - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/m2d2_s2orc/val/part-0-00000.npy
+        # v3-small-pile-validation:
+        #   - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/pile/val/part-0-00000.npy
+        # v3-small-wikitext_103-validation:
+        #   - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/wikitext_103/val/part-0-00000.npy
 
   - label: v2-small-ppl-validation
     data:
@@ -157,16 +159,16 @@ evaluators:
         - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/m2d2_wiki/val.npy
         v2-small-manosphere-validation:
         - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/manosphere/val.npy
-        v2-small-mc4_en-validation:
-        - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/mc4_en/val.npy
-        v2-small-pile-validation:
-        - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/pile/val.npy
-        v2-small-ptb-validation:
-        - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/ptb/val.npy
-        v2-small-twitterAEE-validation:
-        - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/twitterAEE/val.npy
-        v2-small-wikitext_103-validation:
-        - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/wikitext_103/val.npy
+        # v2-small-mc4_en-validation:
+        # - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/mc4_en/val.npy
+        # v2-small-pile-validation:
+        # - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/pile/val.npy
+        # v2-small-ptb-validation:
+        # - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/ptb/val.npy
+        # v2-small-twitterAEE-validation:
+        # - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/twitterAEE/val.npy
+        # v2-small-wikitext_103-validation:
+        # - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/wikitext_103/val.npy
 
   # 声明对验证集所要执行的测试任务
   - label: piqa

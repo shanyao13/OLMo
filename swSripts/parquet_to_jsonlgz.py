@@ -6,8 +6,10 @@ import os
 from multiprocessing import Pool
 
 # 定义输入目录和输出目录
-input_directory = '/mnt/zzb/peixunban/zzb6/data/swZheng/dataSet/raw/TinyStories2/TinyStories/data'
-output_directory = '/mnt/zzb/peixunban/zzb6/data/swZheng/dataSet/preTrainJsonL/tinyStories/documents/'
+# input_directory = '/mnt/zzb/peixunban/zzb6/data/swZheng/dataSet/raw/TinyStories2/TinyStories/data'
+# output_directory = '/mnt/zzb/peixunban/zzb6/data/swZheng/dataSet/preTrainJsonL/tinyStories/documents/'
+input_directory = '/mnt/zzb/peixunban/zzb6/home/swZheng/sftData/tulu/tulu-3-sft-mixture/data'
+output_directory = '/mnt/zzb/peixunban/zzb6/home/swZheng/sftData/tulu/tulu-3-sft-mixture/data_json'
 
 # 如果输出目录不存在，创建它
 os.makedirs(output_directory, exist_ok=True)

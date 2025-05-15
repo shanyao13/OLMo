@@ -1,0 +1,584 @@
+run_name: OLMo-1B-a100
+seed: 426198
+epoch: null
+dry_run: false
+model:
+  d_model: 2048
+  n_heads: 16
+  n_kv_heads: null
+  clip_qkv: null
+  n_layers: 16
+  mlp_ratio: 8
+  mlp_hidden_size: null
+  activation_type: swiglu
+  block_type: sequential
+  block_group_size: 1
+  alibi: false
+  alibi_bias_max: 8.0
+  rope: true
+  rope_full_precision: true
+  rope_theta: 10000
+  flash_attention: true
+  attention_dropout: 0.0
+  multi_query_attention: false
+  attention_layer_norm: false
+  residual_dropout: 0.0
+  embedding_dropout: 0.0
+  embedding_layer_norm: false
+  layer_norm_type: default
+  layer_norm_with_affine: false
+  layer_norm_eps: 1.0e-05
+  attention_layer_norm_with_affine: false
+  max_sequence_length: 1024
+  include_bias: false
+  bias_for_layer_norm: false
+  scale_logits: false
+  vocab_size: 50280
+  embedding_size: 50304
+  weight_tying: true
+  eos_token_id: 0
+  pad_token_id: 1
+  init_device: cuda
+  init_fn: normal
+  init_std: 0.02
+  init_cutoff_factor: null
+  precision: amp_bf16
+  scale_emb_init: false
+  emb_init_std: null
+  norm_after: false
+optimizer:
+  name: adamw
+  learning_rate: 0.0004
+  weight_decay: 0.1
+  betas:
+  - 0.9
+  - 0.95
+  eps: 1.0e-05
+  no_decay_norm_and_bias: null
+  selective_updates: false
+  decay_norm_and_bias: false
+  decay_embeddings: false
+  metrics_log_interval: 10
+  record_update_metrics: false
+scheduler:
+  name: cosine_with_warmup
+  units: steps
+  t_warmup: 2000
+  t_max: null
+  alpha_f: 0.1
+  grad_clip_warmup_steps: null
+  grad_clip_warmup_factor: null
+  warmup_min_lr: null
+data:
+  paths:
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-10-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-18-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-07-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-01-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-03-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-04-00004.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-13-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-17-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-09-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-04-00003.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-00-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-11-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-02-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-07-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-06-00005.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-06-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-01-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-08-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-02-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-11-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-15-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-06-00004.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-08-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-05-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-00-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-16-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-12-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-08-00003.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-12-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-02-00003.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-09-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-17-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-13-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-15-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-13-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-05-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-19-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-14-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-02-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-07-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-02-00004.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-14-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-08-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-15-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-10-00003.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-06-00006.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-17-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-04-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-00-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-06-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-00-00003.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-09-00003.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-11-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-10-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-09-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-01-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-05-00003.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-14-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-16-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-10-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-08-00004.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-08-00005.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-06-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-05-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-10-00004.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-13-00003.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-02-00005.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-04-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-06-00003.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-03-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-14-00003.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-03-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer1/part-04-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-10-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-01-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-05-00004.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-00-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-07-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-06-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-02-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-15-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-08-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-05-00001.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-12-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-17-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-13-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-05-00002.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-14-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-11-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-09-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-05-00003.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-16-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-05-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-03-00000.npy
+  - /mnt/zzb6data/peixunban/zzb6/data/zjf_zsw/tokenizer2/part-04-00000.npy
+  memmap_dtype: uint16
+  datasets: null
+  label_mask_paths: null
+  pad_direction: right
+  generate_attention_mask: false
+  generate_doc_lengths: false
+  num_workers: 0
+  drop_last: true
+  pin_memory: true
+  prefetch_factor: 16
+  persistent_workers: true
+  timeout: 0
+  seed: null
+  instance_filter: null
+  custom_dataset: null
+restore_dataloader: true
+fast_forward_batches: null
+evaluators:
+- label: v3-small-ppl-validation
+  type: lm
+  data:
+    paths: null
+    memmap_dtype: uint16
+    datasets:
+      v3-small-c4_en-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/c4_en/val/part-0-00000.npy
+      v3-small-dolma_books-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/dolma_books/val/part-0-00000.npy
+      v3-small-dolma_common-crawl-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/dolma_common-crawl/val/part-0-00000.npy
+      v3-small-dolma_pes2o-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/dolma_pes2o/val/part-0-00000.npy
+      v3-small-dolma_reddit-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/dolma_reddit/val/part-0-00000.npy
+      v3-small-dolma_stack-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/dolma_stack/val/part-0-00000.npy
+      v3-small-dolma_wiki-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/dolma_wiki/val/part-0-00000.npy
+      v3-small-ice-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/ice/val/part-0-00000.npy
+      v3-small-m2d2_s2orc-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/m2d2_s2orc/val/part-0-00000.npy
+      v3-small-pile-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/pile/val/part-0-00000.npy
+      v3-small-wikitext_103-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v3_small_gptneox20b/wikitext_103/val/part-0-00000.npy
+    label_mask_paths: null
+    pad_direction: right
+    generate_attention_mask: false
+    generate_doc_lengths: false
+    num_workers: 0
+    drop_last: true
+    pin_memory: false
+    prefetch_factor: null
+    persistent_workers: false
+    timeout: 0
+    seed: null
+    instance_filter: null
+    custom_dataset: null
+  device_eval_batch_size: null
+  subset_num_batches: null
+- label: v2-small-ppl-validation
+  type: lm
+  data:
+    paths: null
+    memmap_dtype: uint16
+    datasets:
+      v2-small-4chan-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/4chan/val.npy
+      v2-small-c4_100_domains-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/c4_100_domains/val.npy
+      v2-small-c4_en-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/c4_en/val.npy
+      v2-small-gab-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/gab/val.npy
+      v2-small-ice-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/ice/val.npy
+      v2-small-m2d2_s2orc-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/m2d2_s2orc/val.npy
+      v2-small-m2d2_wiki-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/m2d2_wiki/val.npy
+      v2-small-manosphere-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/manosphere/val.npy
+      v2-small-mc4_en-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/mc4_en/val.npy
+      v2-small-pile-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/pile/val.npy
+      v2-small-ptb-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/ptb/val.npy
+      v2-small-twitterAEE-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/twitterAEE/val.npy
+      v2-small-wikitext_103-validation:
+      - /mnt/zzb6data/peixunban/zzb6/home/sfx/eval-data/perplexity/v2_small_gptneox20b/wikitext_103/val.npy
+    label_mask_paths: null
+    pad_direction: right
+    generate_attention_mask: false
+    generate_doc_lengths: false
+    num_workers: 0
+    drop_last: true
+    pin_memory: false
+    prefetch_factor: null
+    persistent_workers: false
+    timeout: 0
+    seed: null
+    instance_filter: null
+    custom_dataset: null
+  device_eval_batch_size: null
+  subset_num_batches: null
+- label: piqa
+  type: downstream
+  data:
+    paths: null
+    memmap_dtype: uint16
+    datasets: null
+    label_mask_paths: null
+    pad_direction: right
+    generate_attention_mask: false
+    generate_doc_lengths: false
+    num_workers: 0
+    drop_last: false
+    pin_memory: false
+    prefetch_factor: null
+    persistent_workers: false
+    timeout: 0
+    seed: null
+    instance_filter: null
+    custom_dataset: null
+  device_eval_batch_size: null
+  subset_num_batches: null
+- label: hellaswag
+  type: downstream
+  data:
+    paths: null
+    memmap_dtype: uint16
+    datasets: null
+    label_mask_paths: null
+    pad_direction: right
+    generate_attention_mask: false
+    generate_doc_lengths: false
+    num_workers: 0
+    drop_last: false
+    pin_memory: false
+    prefetch_factor: null
+    persistent_workers: false
+    timeout: 0
+    seed: null
+    instance_filter: null
+    custom_dataset: null
+  device_eval_batch_size: null
+  subset_num_batches: null
+- label: winogrande
+  type: downstream
+  data:
+    paths: null
+    memmap_dtype: uint16
+    datasets: null
+    label_mask_paths: null
+    pad_direction: right
+    generate_attention_mask: false
+    generate_doc_lengths: false
+    num_workers: 0
+    drop_last: false
+    pin_memory: false
+    prefetch_factor: null
+    persistent_workers: false
+    timeout: 0
+    seed: null
+    instance_filter: null
+    custom_dataset: null
+  device_eval_batch_size: null
+  subset_num_batches: null
+- label: openbook_qa
+  type: downstream
+  data:
+    paths: null
+    memmap_dtype: uint16
+    datasets: null
+    label_mask_paths: null
+    pad_direction: right
+    generate_attention_mask: false
+    generate_doc_lengths: false
+    num_workers: 0
+    drop_last: false
+    pin_memory: false
+    prefetch_factor: null
+    persistent_workers: false
+    timeout: 0
+    seed: null
+    instance_filter: null
+    custom_dataset: null
+  device_eval_batch_size: null
+  subset_num_batches: null
+- label: sciq
+  type: downstream
+  data:
+    paths: null
+    memmap_dtype: uint16
+    datasets: null
+    label_mask_paths: null
+    pad_direction: right
+    generate_attention_mask: false
+    generate_doc_lengths: false
+    num_workers: 0
+    drop_last: false
+    pin_memory: false
+    prefetch_factor: null
+    persistent_workers: false
+    timeout: 0
+    seed: null
+    instance_filter: null
+    custom_dataset: null
+  device_eval_batch_size: null
+  subset_num_batches: null
+- label: arc_easy
+  type: downstream
+  data:
+    paths: null
+    memmap_dtype: uint16
+    datasets: null
+    label_mask_paths: null
+    pad_direction: right
+    generate_attention_mask: false
+    generate_doc_lengths: false
+    num_workers: 0
+    drop_last: false
+    pin_memory: false
+    prefetch_factor: null
+    persistent_workers: false
+    timeout: 0
+    seed: null
+    instance_filter: null
+    custom_dataset: null
+  device_eval_batch_size: null
+  subset_num_batches: null
+- label: copa
+  type: downstream
+  data:
+    paths: null
+    memmap_dtype: uint16
+    datasets: null
+    label_mask_paths: null
+    pad_direction: right
+    generate_attention_mask: false
+    generate_doc_lengths: false
+    num_workers: 0
+    drop_last: false
+    pin_memory: false
+    prefetch_factor: null
+    persistent_workers: false
+    timeout: 0
+    seed: null
+    instance_filter: null
+    custom_dataset: null
+  device_eval_batch_size: null
+  subset_num_batches: null
+- label: rte
+  type: downstream
+  data:
+    paths: null
+    memmap_dtype: uint16
+    datasets: null
+    label_mask_paths: null
+    pad_direction: right
+    generate_attention_mask: false
+    generate_doc_lengths: false
+    num_workers: 0
+    drop_last: false
+    pin_memory: false
+    prefetch_factor: null
+    persistent_workers: false
+    timeout: 0
+    seed: null
+    instance_filter: null
+    custom_dataset: null
+  device_eval_batch_size: null
+  subset_num_batches: null
+- label: commitment_bank
+  type: downstream
+  data:
+    paths: null
+    memmap_dtype: uint16
+    datasets: null
+    label_mask_paths: null
+    pad_direction: right
+    generate_attention_mask: false
+    generate_doc_lengths: false
+    num_workers: 0
+    drop_last: false
+    pin_memory: false
+    prefetch_factor: null
+    persistent_workers: false
+    timeout: 0
+    seed: null
+    instance_filter: null
+    custom_dataset: null
+  device_eval_batch_size: null
+  subset_num_batches: null
+- label: mrpc
+  type: downstream
+  data:
+    paths: null
+    memmap_dtype: uint16
+    datasets: null
+    label_mask_paths: null
+    pad_direction: right
+    generate_attention_mask: false
+    generate_doc_lengths: false
+    num_workers: 0
+    drop_last: false
+    pin_memory: false
+    prefetch_factor: null
+    persistent_workers: false
+    timeout: 0
+    seed: null
+    instance_filter: null
+    custom_dataset: null
+  device_eval_batch_size: null
+  subset_num_batches: null
+- label: sst2
+  type: downstream
+  data:
+    paths: null
+    memmap_dtype: uint16
+    datasets: null
+    label_mask_paths: null
+    pad_direction: right
+    generate_attention_mask: false
+    generate_doc_lengths: false
+    num_workers: 0
+    drop_last: false
+    pin_memory: false
+    prefetch_factor: null
+    persistent_workers: false
+    timeout: 0
+    seed: null
+    instance_filter: null
+    custom_dataset: null
+  device_eval_batch_size: null
+  subset_num_batches: null
+eval_interval: 200
+tokenizer:
+  identifier: tokenizers/allenai_eleuther-ai-gpt-neox-20b-pii-special.json
+  truncate_direction: right
+save_folder: /mnt/zzb6data/peixunban/zzb6/home/swZheng/OLMo/olmo-tmp-out
+remote_save_folder: null
+canceled_check_interval: 50
+save_interval: 200
+save_interval_unsharded: 10000
+save_interval_ephemeral: null
+save_num_checkpoints_to_keep: 9
+save_num_unsharded_checkpoints_to_keep: -1
+save_overwrite: true
+force_save_unsharded: false
+no_pre_train_checkpoint: false
+load_path: null
+load_path_sharded_checkpointer: null
+try_load_latest_save: false
+reset_optimizer_state: false
+reset_trainer_state: false
+sharded_checkpointer: torch_legacy
+new_style_checkpoints: null
+max_duration: 739328
+global_train_batch_size: 512
+device_train_batch_size: 64
+device_train_microbatch_size: 8
+device_eval_batch_size: 8
+eval_subset_num_batches: -1
+eval_on_load: false
+device_train_grad_accum: 8
+max_grad_norm: 1.0
+max_grad_norm_ratio: null
+precision: amp_bf16
+wandb:
+  project: olmo-a100-tokenizer1
+  entity: zhengshui13
+  group: null
+  name: OLMo-1B-a100
+  tags:
+  - watching
+  log_artifacts: false
+  rank_zero_only: true
+  log_interval: 1
+speed_monitor:
+  window_size: 20
+  gpu_flops_available: null
+console_log_interval: 1
+gen1_gc_interval: 1
+compile:
+  mode: null
+  fullgraph: false
+  backend: inductor
+  dynamic: null
+distributed_strategy: fsdp
+fsdp:
+  use_orig_params: true
+  sharding_strategy: FULL_SHARD
+  wrapping_strategy: null
+  precision: mixed
+  hybrid_sharding_num_model_replicas: null
+ddp: null
+single:
+  device: auto
+softmax_auxiliary_loss: false
+auxiliary_loss_multiplier: 0.0001
+time_limit: 864000.0
+extra_steps_after_cancel: 10
+early_stopping_factor: null
+save_data_indices: true
+python_profiling: false
+torch_profiling: false
+stop_at: null
+stop_after: null
+activation_checkpointing: null
+fused_loss: null
+hf_datasets_cache_dir: null
+module_outputs_save_steps: null

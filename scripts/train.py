@@ -64,6 +64,7 @@ def main(cfg: TrainConfig) -> None:
             "setting has no effect."
         )
 
+    # 分布式训练中，同步屏障，用于阻塞所有进程，直到所有进程都达到该点。
     barrier()
 
     # Set CUDA device.
@@ -137,7 +138,7 @@ def main(cfg: TrainConfig) -> None:
 
     # Initialize the model.
     log.info("Building model...")
-    olmo_model = OLMo(cfg.model)
+    olmo_model = OLMo(cfg.model)                   # ----------------------------------------------------------------------------------------
     log.info(f"Total number of parameters: {olmo_model.num_params():,d}")
     log.info(f"Number of non-embedding parameters: {olmo_model.num_params(include_embedding=False):,d}")
     log.info(f"Peak GPU Memory (MB) before {cfg.distributed_strategy}: {int(peak_gpu_memory() or 0)}")
@@ -149,7 +150,7 @@ def main(cfg: TrainConfig) -> None:
         for block in olmo_model.transformer.blocks:
             block.compile(**cfg.compile.asdict())
 
-    olmo_model.set_activation_checkpointing(cfg.activation_checkpointing)
+    olmo_model.set_activation_checkpointing(cfg.activation_checkpointing)     # -------------------------------------------------------------
 
     if cfg.distributed_strategy == DistributedStrategy.ddp:
         log.info("Wrapping model with DDP...")
@@ -207,7 +208,8 @@ def main(cfg: TrainConfig) -> None:
             device_mesh = init_device_mesh("cuda", (num_model_replicas, get_world_size() // num_model_replicas))
             hybrid_sharding_fsdp_kwargs["device_mesh"] = device_mesh
 
-        dist_model = FSDP(
+        # 模型 olmo_model 包装成分布式训练模型 dist_model
+        dist_model = FSDP(                              # ---------------------------------------------------------------------------------------------------
             olmo_model,
             sharding_strategy=cfg.fsdp.sharding_strategy,
             mixed_precision=cfg.fsdp_precision,
@@ -234,7 +236,7 @@ def main(cfg: TrainConfig) -> None:
     log.info(dist_model)
 
     # Construct optimizer and learning rate scheduler.
-    optim = build_optimizer(cfg, dist_model)
+    optim = build_optimizer(cfg, dist_model)       # ---------------------------------------------------------------------------------------------------
     scheduler = build_scheduler(cfg)
 
     # Data indices file.
@@ -246,8 +248,8 @@ def main(cfg: TrainConfig) -> None:
         indices_file_path.parent.mkdir(exist_ok=True, parents=True)
         indices_file = gzip.open(indices_file_path, "wt")
 
-    # Consolidate components into `Trainer` object.
-    with Trainer(
+    # Consolidate components into `Trainer` object.使用了 Trainer 类来管理训练过程，并处理与加载、保存检查点（checkpoint）相关的逻辑
+    with Trainer(                                   # ---------------------------------------------------------------------------------------------------
         cfg=cfg,
         epoch=cfg.epoch,
         model=olmo_model,
@@ -333,7 +335,7 @@ def main(cfg: TrainConfig) -> None:
 
             # We save a checkpoint up-front to make sure this won't fail (due to disk space or whatever).
             log.info("Saving pre-train checkpoint...")
-            checkpoint_path, local_checkpoint_cache = trainer.save_checkpoint(checkpoint_type=checkpoint_type)
+            checkpoint_path, local_checkpoint_cache = trainer.save_checkpoint(checkpoint_type=checkpoint_type)   #---------------------------------------------------------------
             log.info(f"Checkpoint saved to {checkpoint_path}")
 
             # And they we verify that we can load it.
@@ -424,7 +426,7 @@ if __name__ == "__main__":
         raise OLMoCliError(f"Usage: {sys.argv[0]} [CONFIG_PATH] [OPTIONS]")
 
     cfg = TrainConfig.load(yaml_path, [clean_opt(s) for s in args_list])
-    if torch.backends.mps.is_available():
+    if torch.backends.mps.is_available():   # 检查当前系统是否支持 MPS（Metal Performance Shaders）后端，即 macOS 上用于 GPU 加速的 PyTorch 后端
         log.info("Device is MPS. Updating config...")
         cfg.model.init_device = "mps"
         cfg.distributed_strategy = "single"  # type: ignore

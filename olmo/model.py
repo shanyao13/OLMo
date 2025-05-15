@@ -1101,7 +1101,11 @@ class OLMo(nn.Module):
 
         torch.backends.cuda.enable_flash_sdp(True)
         torch.backends.cuda.enable_mem_efficient_sdp(False)  # this is super slow so make sure torch won't use it
-
+        #模型组件构建
+        '''1完整搭建了一个支持 block 分组、可选位置编码、可配置初始化等特性的 Transformer。
+            2结构上支持 ALiBi、RoPE、Flash Attention 等机制。
+            3完善的配置检查逻辑，适合用于大模型训练中易出错的场景。
+            4具备激活检查点机制以优化显存占用。'''
         self.transformer = nn.ModuleDict(
             dict(
                 wte=nn.Embedding(
@@ -1250,7 +1254,7 @@ class OLMo(nn.Module):
         self.__cache["alibi_attention_bias"] = alibi_bias
         return alibi_bias
 
-    def forward(
+    def forward(                       #-----------------------------------------------------------------------
         self,
         input_ids: torch.LongTensor,
         input_embeddings: Optional[torch.FloatTensor] = None,
@@ -1464,7 +1468,7 @@ class OLMo(nn.Module):
             hidden_states=tuple(all_hidden_states) if output_hidden_states else None,
         )
 
-    def get_fsdp_wrap_policy(self, wrap_strategy: Optional[FSDPWrapStrategy] = None):
+    def get_fsdp_wrap_policy(self, wrap_strategy: Optional[FSDPWrapStrategy] = None):    #-----------------------------------------------------------------------
         if wrap_strategy is None:
             return None
 
@@ -1559,7 +1563,7 @@ class OLMo(nn.Module):
         else:
             raise NotImplementedError(wrap_strategy)
 
-    def num_params(self, include_embedding: bool = True) -> int:
+    def num_params(self, include_embedding: bool = True) -> int:   #-----------------------------------------------------------------------
         """
         Get the total number of parameters.
         """
@@ -1572,7 +1576,7 @@ class OLMo(nn.Module):
         return sum(p.numel() for _, p in params)
 
     @property
-    def num_fwd_flops(self):
+    def num_fwd_flops(self):    
         if self.__num_fwd_flops:
             return self.__num_fwd_flops
 
@@ -1600,7 +1604,7 @@ class OLMo(nn.Module):
         self.__num_bck_flops = params_flops_per_token + attn_flops_per_token
         return self.__num_bck_flops
 
-    def generate(
+    def generate(                 #-----------------------------------------------------------------------
         self,
         input_ids: torch.LongTensor,
         attention_mask: Optional[torch.Tensor] = None,
@@ -1728,7 +1732,7 @@ class OLMo(nn.Module):
         )
 
     @classmethod
-    def from_checkpoint(
+    def from_checkpoint(             #-----------------------------------------------------------------------
         cls, checkpoint_dir: PathOrStr, device: str = "cpu", checkpoint_type: Optional[CheckpointType] = None
     ) -> OLMo:
         """
